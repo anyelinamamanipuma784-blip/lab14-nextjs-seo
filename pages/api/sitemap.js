@@ -1,4 +1,4 @@
-const BASE_URL = "https://mi-sitio.com";
+const BASE_URL = "https://lab14-nextjs-seo.onrender.com";
 
 export default async function handler(req, res) {
   const urls = ["/", "/blog", "/contacto"]; // Rutas dinámicas
