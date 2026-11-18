@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Link from "next/link";
+import Layout from "../components/Layout";
 import { getPostsFromCMS } from "../lib/cms";
 
 export async function getServerSideProps() {
@@ -9,7 +9,7 @@ export async function getServerSideProps() {
 
 export default function Blog({ posts }) {
   return (
-    <>
+    <Layout>
       <Head>
         <title>Blog de Desarrollo Web y SEO | Artículos Técnicos Next.js</title>
         <meta
@@ -26,28 +26,35 @@ export default function Blog({ posts }) {
         <meta property="og:type" content="article" />
       </Head>
 
-      <nav style={{ display: "flex", gap: "20px", padding: "1rem 2rem", backgroundColor: "#1e293b", color: "white" }}>
-        <Link href="/" style={{ color: "#93c5fd" }}>Inicio</Link>
-        <Link href="/blog" style={{ color: "white", fontWeight: "bold" }}>Blog</Link>
-        <Link href="/contacto" style={{ color: "#93c5fd" }}>Contacto</Link>
-      </nav>
+      <section className="hero-card" style={{ padding: "2.2rem 2.5rem" }}>
+        <span className="badge badge-mint">Conectado a CMS / Base de Datos</span>
+        <h1 className="hero-title" style={{ fontSize: "2rem" }}>
+          Blog Técnico y Guías SEO
+        </h1>
+        <p className="hero-subtitle" style={{ marginBottom: 0 }}>
+          Cada artículo mostrado aquí se consulta dinámicamente y se incluye de forma automática en nuestro endpoint{" "}
+          <span className="code-pill">/api/sitemap</span>.
+        </p>
+      </section>
 
-      <main style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
-        <h1>Blog de Artículos (Desde CMS / BD)</h1>
-        <p>Estas rutas se indexan automáticamente en nuestro Sitemap dinámico:</p>
+      <section className="grid-3">
+        {posts.map((post, index) => (
+          <article key={post.id} className="card" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+            <div>
+              <span className={`badge ${index % 2 === 0 ? "badge-lavender" : "badge-peach"}`}>
+                Artículo #{post.id}
+              </span>
+              <h2 className="card-title">{post.title}</h2>
+              <p className="card-text">{post.excerpt}</p>
+            </div>
 
-        <div style={{ display: "grid", gap: "1rem", marginTop: "1.5rem" }}>
-          {posts.map((post) => (
-            <article key={post.id} style={{ padding: "1rem", border: "1px solid #cbd5e1", borderRadius: "8px" }}>
-              <h2>{post.title}</h2>
-              <p>{post.excerpt}</p>
-              <small style={{ color: "#64748b" }}>
-                Slug indexado: <code>/blog/{post.slug}</code> | Actualizado: {post.updatedAt}
-              </small>
-            </article>
-          ))}
-        </div>
-      </main>
-    </>
+            <div className="card-footer-meta">
+              <span className="code-pill">/blog/{post.slug}</span>
+              <span>{post.updatedAt}</span>
+            </div>
+          </article>
+        ))}
+      </section>
+    </Layout>
   );
 }
