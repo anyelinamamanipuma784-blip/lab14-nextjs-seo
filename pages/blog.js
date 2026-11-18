@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import Layout from "../components/Layout";
 import { getPostsFromCMS } from "../lib/cms";
 
@@ -39,17 +40,25 @@ export default function Blog({ posts }) {
 
       <section className="grid-3">
         {posts.map((post, index) => (
-          <article key={post.id} className="card" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+          <article
+            key={post.id}
+            className="card"
+            style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+          >
             <div>
               <span className={`badge ${index % 2 === 0 ? "badge-lavender" : "badge-peach"}`}>
                 Artículo #{post.id}
               </span>
-              <h2 className="card-title">{post.title}</h2>
+              <h2 className="card-title">
+                <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+              </h2>
               <p className="card-text">{post.excerpt}</p>
             </div>
 
             <div className="card-footer-meta">
-              <span className="code-pill">/blog/{post.slug}</span>
+              <Link href={`/blog/${post.slug}`} className="code-pill" style={{ fontWeight: 600 }}>
+                Leer artículo →
+              </Link>
               <span>{post.updatedAt}</span>
             </div>
           </article>
